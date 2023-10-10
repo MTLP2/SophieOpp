@@ -4,26 +4,46 @@
 	<meta charset="UTF-8">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/8c5892ef92.js" crossorigin="anonymous"></script>
+    <script type="module" src="/FrontEnd/assets/main.js" defer></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script type="module" src="/FrontEnd/main.js" defer></script>
 </head>
+
+
+
+
+
 <body>
+
+<!--*************************************************
+******************** HEADER *************************
+**************************************************-->
 <header>
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
+			<li><a href="index.html#portfolio">Projets</a></li>
+			<li><a href="index.html#contact">Contact</a></li>
+			<li><a href="login.html">Login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
+
+
+<!--*************************************************
+******************** MAIN ***************************
+**************************************************-->
 <main>
+
+	<!--*************************************************
+	******************** INTRODUCTION *******************
+	**************************************************-->
 	<section id="introduction">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
@@ -35,12 +55,28 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
+
+	<!--*************************************************
+	******************** PORTFOLIO **********************
+	**************************************************-->
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
+
+		<div class="filter">
+			<p class="filterAll">Tous</p>
+			<p class="filterObjects">Objets</p>
+			<p class="filterAppartments">Appartements</p>
+			<p class="filterHotelsAndRestaurants">Hôtels & restaurants</p>
+		</div>
+
 		<div class="gallery">
-			<!-- Gallerie générée dans le script "main.js" -->
+			
 		</div>
 	</section>
+
+	<!--*************************************************
+	******************** CONTACT ************************
+	**************************************************-->
 	<section id="contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
@@ -56,6 +92,10 @@
 	</section>
 </main>
 
+
+<!--*************************************************
+******************** FOOTER *************************
+**************************************************-->
 <footer>
 	<nav>
 		<ul>
