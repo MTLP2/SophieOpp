@@ -344,7 +344,7 @@ footer li{
 	height: auto;
 	width: 500px;
 
-	/* display: none; */
+	display: none;
 	position: fixed;
 	top: 250px;
 	left: 35%;
