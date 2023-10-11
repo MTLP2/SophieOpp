@@ -1,3 +1,75 @@
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Votre code ici sera exécuté après que le DOM soit complètement chargé
+  let acces = localStorage.getItem("coolacces");
+  console.log(acces);
+
+  
+  if (acces == null){
+    console.log('ok');
+    document.querySelector('.modeEdition').innerHTML = `<div></div>`;
+    document.querySelector('.titleEdit').innerHTML = `<div></div>`;
+  }
+
+  else if (acces = "true") {
+    document.querySelector('.modeEdition').innerHTML = 
+    `
+    <div class="edit-mode">
+      <i class="fa-regular fa-pen-to-square"></i>
+      <p>Mode édition</p>
+    </div>
+    `;
+    document.querySelector('.titleEdit').innerHTML = 
+    `
+    <h2>Mes Projets</h2>
+			<div class="edit">
+				<div id="editPortfolio">
+					<i class="fa-regular fa-pen-to-square"></i>
+					<p>modifier</p>
+				</div>
+			</div>
+    `
+  }
+  document.querySelector("#editPortfolio").addEventListener('click', (e) =>{
+    showModal1(data)
+  })
+
+  
+  
+});
+
+async function showModal1(data) {
+  
+
+
+  document.querySelector('.edit-1').innerHTML = 
+  `
+  <i class="fa-solid fa-xmark" id="closeEdit-1"></i>
+  <h2>Galerie photo</h2>
+  <div class="img-area">
+    
+  </div>
+  <div class="btn-area">
+    <p>Ajouter une photo</p>
+  </div>
+  `
+  for (let i = 0; i < data.length; i++) {
+    const img = data[i].imageUrl;
+    document.querySelector(".img-area").innerHTML += 
+    `
+    <div class="img-area-display">
+      <img src="${img}" alt="">
+      <i id = trash-${i} class="fa-solid fa-trash-can trash"></i>
+    </div>
+    `
+    
+    console.log(img);
+    
+  }
+
+  document.querySelector('.edit-1').style.display = "block"
+}
+
 //***************************************
 //********** Connexion à l'API **********
 //***************************************
@@ -53,13 +125,5 @@ document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", 
   gallery.innerHTML = "";
   projectShow(filterObject);
 });
-
-
-
-
-
-
-
-
 
 
