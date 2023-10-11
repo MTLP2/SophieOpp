@@ -443,5 +443,9 @@ footer li{
 
 
 
+.titleEdit{
+	display: flex;
+	cursor: pointer;
+	justify-content: center;
 
-
+}

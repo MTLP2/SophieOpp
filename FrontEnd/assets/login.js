@@ -1,9 +1,4 @@
-
-
-
-
 const url = "http://localhost:5678/api/users/login";
-
 
 document.querySelector('#login form').addEventListener('submit', (e)=> {
     e.preventDefault()
@@ -33,10 +28,10 @@ document.querySelector('#login form').addEventListener('submit', (e)=> {
     .then(data => {
         const token = data.token;
         console.log("Token reçu:", token);
-        
+        window.location.href = "./index.html"
         // Vous pouvez par exemple sauvegarder ce token dans le localStorage ou ailleurs
         localStorage.setItem("userToken", token);
-        window.location.href = '/index.html';
+        localStorage.setItem("coolacces", "true")
 
     })
     .catch(error => {
@@ -47,5 +42,4 @@ document.querySelector('#login form').addEventListener('submit', (e)=> {
 
     
 });
-
 
