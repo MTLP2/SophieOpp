@@ -28,6 +28,27 @@ async function projectShow(){
 }
 
 
+async function projectShowFilter(data){
+
+  //***************************************
+  //********** Connexion à l'API **********
+  //***************************************
+  const gallery = document.querySelector(".gallery");
+  console.log(data);
+//***************************************
+
+  let galleryContent = "";
+  for (let i = 0; i < data.length; i++) {
+    // console.log(data[i]);
+    galleryContent +=
+    `
+    <figure>
+    <img src="${data[i].imageUrl}" alt="${data[i].title}">
+    <figcaption>${data[i].title}</figcaption>
+    </figure>`;
+  }
+  gallery.innerHTML = galleryContent;
+}
 //---------------------------------------
 
 //***************************************
@@ -252,6 +273,7 @@ const data = await response.json();
 
 
 projectShow();
+const gallery = document.querySelector(".gallery");
 
 //Annuler les filtres de la gallerie
 document.querySelector(".filterAll").addEventListener("click", () =>{
@@ -262,17 +284,17 @@ document.querySelector(".filterAll").addEventListener("click", () =>{
 document.querySelector(".filterObjects").addEventListener("click", () =>{
   const filterObject = data.filter(elt => elt.category.name === "Objets");
   gallery.innerHTML = "";
-  projectShow(filterObject);
+  projectShowFilter(filterObject);
 });
 //Affiche uniquement la catégorie "appartements" dans la gallerie
 document.querySelector(".filterAppartments").addEventListener("click", () =>{
   const filterObject = data.filter(elt => elt.category.name === "Appartements");
   gallery.innerHTML = "";
-  projectShow(filterObject);
+  projectShowFilter(filterObject);
 });
 //Affiche uniquement la catégorie "hotel & restaurants" dans la gallerie
 document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", () =>{
   const filterObject = data.filter(elt => elt.category.name === "Hotels & restaurants");
   gallery.innerHTML = "";
-  projectShow(filterObject);
+  projectShowFilter(filterObject);
 });
