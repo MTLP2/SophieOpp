@@ -203,8 +203,15 @@ footer li{
 	cursor: pointer;
 }
 
+/**********************************/
+/****** Contact Form **************/
+/**********************************/
 
-
+.contactMsg{
+	color: red;
+	text-decoration: underline;
+	font-size: 1rem;
+}
 
 
 /*********************************************************************************************/
@@ -227,6 +234,7 @@ footer li{
 .edit-mode{
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	height: 30px;
 	color:white;
 	background-color: black;

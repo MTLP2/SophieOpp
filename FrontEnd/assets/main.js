@@ -202,6 +202,12 @@ async function showModal2() {
     </div>
   </form>
   `
+  /**Retour à la modale 1**/
+  document.querySelector("#returnEdit-1").addEventListener("click", () =>{
+    document.querySelector(".edit-2").innerHTML = "";
+    showModal1();
+  })
+  
   const imageUpload = document.getElementById('imageUpload');
   /**Modification de l'image dans l'input file**/
   imageUpload.addEventListener('change', function() {
@@ -303,4 +309,32 @@ document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", 
   const filterObject = newdata.filter(elt => elt.category.name === "Hotels & restaurants");
   gallery.innerHTML = "";
   projectShowFilter(filterObject);
+});
+
+
+
+
+//***************************************
+//********** REGEX CONTACT FORM *********
+//***************************************
+
+const contactMsg = document.querySelector(".contactMsg");
+
+
+
+document.querySelector(".contactForm").addEventListener("submit", () =>{
+  const emailInput = document.getElementById("email");
+  const email = emailInput.value;
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  
+  if (!regex.test(email)) {
+    contactMsg.textContent = "Veuillez entrer une adresse e-mail valide.";
+    event.preventDefault(); // Empêche la soumission du formulaire
+    console.log("pas ok");
+    emailInput.style.border = "2px solid red";
+  } else {
+    // Reset le style et le message d'erreur si l'email est valide
+    emailInput.style.border = "none"; // ou autre style par défaut
+    contactMsg.textContent = "";
+  }
 });
