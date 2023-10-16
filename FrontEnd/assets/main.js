@@ -3,6 +3,8 @@
  * @param {Array} tab Tableau des projets
  */
 
+const body = document.querySelector("body");
+
 async function projectShow(){
 
   //***************************************
@@ -56,13 +58,19 @@ async function projectShowFilter(data){
 //***************************************
 document.addEventListener("DOMContentLoaded", function() {
   // Votre code ici sera exécuté après que le DOM soit complètement chargé
-  let acces = localStorage.getItem("coolacces");
+  let acces = localStorage.getItem("accessToken");
   console.log(acces);
 
   if (acces == null){
     console.log('ok');
     document.querySelector('.modeEdition').innerHTML = `<div></div>`;
     document.querySelector('.titleEdit').innerHTML = `<div></div>`;
+    document.querySelector('header nav ul').innerHTML =`
+    <li><a href="index.html#portfolio">Projets</a></li>
+		<li><a href="index.html#contact">Contact</a></li>
+		<li><a href="./login.html">Login</a></li>
+		<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+    `
   }
 
   else if (acces = "true") {
@@ -83,14 +91,24 @@ document.addEventListener("DOMContentLoaded", function() {
 				</div>
 			</div>
     `
+    document.querySelector('header nav ul').innerHTML =`
+    <li><a href="index.html#portfolio">Projets</a></li>
+		<li><a href="index.html#contact">Contact</a></li>
+		<li><a href="index.html" class="logout">Logout</a></li>
+		<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+    `
   }
   
+  document.querySelector(".logout").addEventListener('click', (e) =>{
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('accessToken');
+    location.reload();
+    
+  })
   document.querySelector("#editPortfolio").addEventListener('click', (e) =>{
     showModal1()
+    body.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
   })
-
-  
-  
 });
 
 
@@ -98,8 +116,6 @@ document.addEventListener("DOMContentLoaded", function() {
 //********** Création de modal 1 ********
 //***************************************
 function showModal1() {
-
-
 
   document.querySelector('.edit-1').innerHTML = 
   `
@@ -109,7 +125,7 @@ function showModal1() {
     
   </div>
   <div id="btn-area1">
-    <p>Ajouter une photo</p>
+    <button>Ajouter une photo</button>
   </div>
   `
   for (let i = 0; i < data.length; i++) {
@@ -134,9 +150,9 @@ function showModal1() {
           },
         })
         .then(data => {
+          body.style.backgroundColor = "transparent";
           projectShow();
           document.querySelector(".edit-1").innerHTML = "";
-
         })
         .catch(error => {
           console.error('Erreur:', error);
@@ -156,6 +172,7 @@ function showModal1() {
   /**Fermeture de la modal au click de la croix* */
   document.querySelector("#closeEdit-1").addEventListener("click", ()=>{
     document.querySelector(".edit-1").innerHTML = "";
+    body.style.backgroundColor = "transparent";
   })
 
   document.querySelector('#btn-area1').addEventListener("click", () => {
@@ -183,15 +200,15 @@ async function showModal2() {
     </div>
     <h2>Ajout photo</h2>
     <div class="upload-box">
-      <input type="file" id="imageUpload" accept="image/*">
+      <input type="file" id="imageUpload" accept="image/*" required>
       <label for="imageUpload" class="upload-label">
       <div class="upload-background"></div>
     </div>
     <label for="edit2Title">Titre</label>
-    <input type="text" id="edit2Title">
+    <input type="text" id="edit2Title" required>
 
     <label for="edit2Categorie">Catégorie</label>
-    <select id="categorySelect" name="categories">
+    <select id="categorySelect" name="categories" required>
       <option value="categorie">Choisissez une catégorie</option>
       <option value="1">Objets</option>
       <option value="2">Appartements</option>
@@ -260,6 +277,7 @@ async function showModal2() {
   /**Fermeture de la modal au click de la croix**/
   document.querySelector("#closeEdit-2").addEventListener("click", ()=>{
     document.querySelector(".edit-2").innerHTML = ""
+    body.style.backgroundColor = "transparent";
   })
 
   document.querySelector('.edit-2').style.display = "block"

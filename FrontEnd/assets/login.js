@@ -2,7 +2,7 @@ const url = "http://localhost:5678/api/users/login";
 
 document.querySelector('#login form').addEventListener('submit', (e)=> {
     e.preventDefault()
-    let emailInput = document.querySelector('input[type = text]').value;
+    let emailInput = document.querySelector('input[type = email]').value;
     let passwordInput = document.querySelector('input[type = password]').value;
     
     const userData = {
@@ -31,8 +31,7 @@ document.querySelector('#login form').addEventListener('submit', (e)=> {
         window.location.href = "./index.html"
         // Vous pouvez par exemple sauvegarder ce token dans le localStorage ou ailleurs
         localStorage.setItem("userToken", token);
-        localStorage.setItem("coolacces", "true")
-
+        localStorage.setItem("accessToken", "true")
     })
     .catch(error => {
         console.error("Une erreur s'est produite:", error.message);
