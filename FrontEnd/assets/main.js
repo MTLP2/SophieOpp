@@ -262,7 +262,6 @@ async function showModal2() {
 
 
 
-
 const response = await fetch(`http://localhost:5678/api/works/`);
 const data = await response.json();
 
@@ -278,23 +277,30 @@ const gallery = document.querySelector(".gallery");
 //Annuler les filtres de la gallerie
 document.querySelector(".filterAll").addEventListener("click", () =>{
   gallery.innerHTML = "";
-  projectShow(data);
+  projectShow();
 });
 //Affiche uniquement la catégorie "objet" dans la gallerie
-document.querySelector(".filterObjects").addEventListener("click", () =>{
-  const filterObject = data.filter(elt => elt.category.name === "Objets");
+document.querySelector(".filterObjects").addEventListener("click", async () =>{
+  const newresponse = await fetch(`http://localhost:5678/api/works/`);
+  const newdata = await newresponse.json(); 
+  const filterObject = newdata.filter(elt => elt.category.name === "Objets");
   gallery.innerHTML = "";
   projectShowFilter(filterObject);
 });
 //Affiche uniquement la catégorie "appartements" dans la gallerie
-document.querySelector(".filterAppartments").addEventListener("click", () =>{
-  const filterObject = data.filter(elt => elt.category.name === "Appartements");
+document.querySelector(".filterAppartments").addEventListener("click", async () =>{
+  const newresponse = await fetch(`http://localhost:5678/api/works/`);
+  const newdata = await newresponse.json(); 
+  const filterObject = newdata.filter(elt => elt.category.name === "Appartements");
+  
   gallery.innerHTML = "";
   projectShowFilter(filterObject);
 });
 //Affiche uniquement la catégorie "hotel & restaurants" dans la gallerie
-document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", () =>{
-  const filterObject = data.filter(elt => elt.category.name === "Hotels & restaurants");
+document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", async () =>{
+  const newresponse = await fetch(`http://localhost:5678/api/works/`);
+  const newdata = await newresponse.json(); 
+  const filterObject = newdata.filter(elt => elt.category.name === "Hotels & restaurants");
   gallery.innerHTML = "";
   projectShowFilter(filterObject);
 });
