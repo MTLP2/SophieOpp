@@ -266,7 +266,7 @@ footer li{
 
 	display: none;
 	position: fixed;
-	top: 250px;
+	top: 150px;
 	left: 35%;
 
 	border-radius: 5px;
@@ -310,7 +310,7 @@ footer li{
 	border-radius: 3px;
 }
 
-.edit-1 .btn-area{
+#btn-area1{
 	margin-top: 25px;
 	border-top: 1px solid black;
 }
@@ -344,9 +344,8 @@ footer li{
 	height: auto;
 	width: 500px;
 
-	display: none;
 	position: fixed;
-	top: 250px;
+	top: 150px;
 	left: 35%;
 
 	border-radius: 5px;
@@ -384,12 +383,14 @@ footer li{
 
 .custom-file-label {
 	height: 120px;
-	border: 1px solid black;
-	background-image: url("/FrontEnd/assets/images/inputFile.png");
+	background-image: url("./images/input-file.png");
+	background-color: rgb(229, 239, 244);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
 	margin-bottom: 15px;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	cursor: pointer;
 }
 
 
@@ -415,7 +416,10 @@ footer li{
 }
 
 
-
+#btn-area2{
+	margin-top: 25px;
+	border-top: 1px solid black;
+}
 
 .btn-area{
 	margin-top: 25px;
@@ -448,4 +452,43 @@ footer li{
 	cursor: pointer;
 	justify-content: center;
 
+}
+
+
+
+
+
+
+.upload-box {
+    position: relative;
+    width: 100%;
+	display: flex;
+	justify-content: center;
+    height: 250px;
+}
+
+.upload-label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.upload-background {
+    height: 200px;
+	background-image: url("./images/input-file.png");
+	background-color: rgb(229, 239, 244);
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-size: contain;
+	margin-bottom: 15px;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	cursor: pointer;
+}
+
+
+
+#imageUpload {
+    display: none;
 }
