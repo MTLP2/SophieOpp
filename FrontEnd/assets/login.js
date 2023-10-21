@@ -1,3 +1,9 @@
+/*********************************************************************************
+ *
+ * Ce fichier contient toutes les fonctions nécessaires au login
+ *
+ *********************************************************************************/
+
 const url = "http://localhost:5678/api/users/login";
 
 document.querySelector('#login form').addEventListener('submit', (e)=> {
@@ -29,7 +35,6 @@ document.querySelector('#login form').addEventListener('submit', (e)=> {
         const token = data.token;
         console.log("Token reçu:", token);
         window.location.href = "./index.html"
-        // Vous pouvez par exemple sauvegarder ce token dans le localStorage ou ailleurs
         localStorage.setItem("userToken", token);
         localStorage.setItem("accessToken", "true")
     })
