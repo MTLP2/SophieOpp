@@ -1,34 +1,31 @@
 /*********************************************************************************
- *
- * Ce fichier contient toutes les fonctions nécessaires à la page index.html
- *
+ * Ce fichier gère la logique associée à la page index.html.
+ * Il comprend des fonctions pour :
+ * - Afficher les projets depuis une API
+ * - Filtrer ces projets
+ * - Gérer le mode d'édition et les modales d'édition
+ * - Valider le formulaire de contact
  *********************************************************************************/
 
 
-
-/*************************************************************************/
-/****************************** VARIABLES GLOBALES ***********************/
-/*************************************************************************/
-// const body = document.querySelector("body");
-
-
-/*************************************************************************/
-/****************************** AFFICHAGE DES PROJETS ********************/
-/*************************************************************************/
+// ---------------- AFFICHAGE DES PROJETS ---------------- //
 /**
- * Fonction "projectShow" qui permet d'afficher les projets sur la homepage.
- * @param {Array} tab Tableau des projets
+ * Fonction asynchrone pour récupérer et afficher les projets depuis l'API.
  */
 async function projectShow(){
 
-  //***************************************
-  //********** Connexion à l'API **********
-  //***************************************
-  const gallery = document.querySelector(".gallery");
-  const response = await fetch(`http://localhost:5678/api/works/`);
-  const data = await response.json();
+  try {
+    // Connexion à l'API et récupération des données
+    const gallery = document.querySelector(".gallery");
+    const response = await fetch(`http://localhost:5678/api/works/`);
+    
+    if (!response.ok) {
+      throw new Error("Erreur réseau ou côté serveur");
+    }
 
-  // Affichage des éléments de data
+    const data = await response.json();
+
+    // Construction et affichage du contenu de la galerie
   let galleryContent = "";
   for (let i = 0; i < data.length; i++) {
     galleryContent +=
@@ -39,15 +36,17 @@ async function projectShow(){
     </figure>`;
   }
   gallery.innerHTML = galleryContent;
+
+  } catch (error) {
+    console.error("Une erreur s'est produite:", error);
+  }
 }
 
 
-/*************************************************************************/
-/****************************** FILTRE DES PROJETS ***********************/
-/*************************************************************************/
+// ---------------- FILTRE DES PROJETS ---------------- //
 /**
- * Fonction "projectShowFilter" qui permet de filtrer l'affichage des projets.
- * @param {Array} data 
+ * Fonction asynchrone pour filtrer et afficher les projets.
+ * @param {Array} data Tableau des projets filtrés
  */
 async function projectShowFilter(data){
 
@@ -67,11 +66,13 @@ async function projectShowFilter(data){
 
 
 
-/*************************************************************************/
-/****************************** MODIFICATION DU DOM : MODE EDIT **********/
-/*************************************************************************/
+// ---------------- MODIFICATION DU DOM : MODE EDIT ---------------- //
+/**
+ * Cette fonction s'exécute lorsque le DOM est complètement chargé.
+ * Elle gère le mode d'édition en fonction de la présence d'un token d'accès.
+ */
 document.addEventListener("DOMContentLoaded", function() {
-  // Le code sera exécuté après que le DOM soit complètement chargé
+
   let acces = localStorage.getItem("accessToken");
 
   // Code éxécuté si absence du token : génération des éléments vide
@@ -86,8 +87,9 @@ document.addEventListener("DOMContentLoaded", function() {
     `
   }
 
-  // Code éxécuté si présence du token : génération des éléments complets
+  // Code éxécuté si présence du token : génération des éléments completés
   else if (acces = "true") {
+
     // Création du header édition
     document.querySelector('.modeEdition').innerHTML = 
     `
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
     `;
 
-    // Modification de la zone de filtre
+    // Création de la zone d'édition à la place des filtres
     document.querySelector('.titleEdit').innerHTML = 
     `
     <h2>Mes Projets</h2>
@@ -108,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				</div>
 			</div>
     `
+
+    // Suppression de la zone de filtre
     document.querySelector(".filter").style.display = "none";
 
     // Modification de la navbar
@@ -134,15 +138,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-/*************************************************************************/
-/****************************** CREATION DE LA MODALE 1 ******************/
-/*************************************************************************/
+// ---------------- CREATION DE LA MODALE 1 ---------------- //
 /**
- * Fonction "showModal1" en charge des fonctionnalités de la modale 1
+ * Fonction asynchrone qui gère la première modale d'édition.
+ * Elle permet de supprimer des projets.
  */
 async function showModal1() {
 
-  // Récupérations des données de l'API pour affichage
+  // Récupérations des données de l'API pour l'affichage des images
   const newresponse = await fetch(`http://localhost:5678/api/works/`);
   const newdata = await newresponse.json();
 
@@ -172,25 +175,27 @@ async function showModal1() {
     const allIcons = document.querySelectorAll('.img-area-display i');
     allIcons.forEach((icon, index) => {
       icon.addEventListener("click", ()=>{
-      const Token = localStorage.getItem("userToken");
-      fetch(`http://localhost:5678/api/works/${newdata[index].id}`, {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${Token}`
-        },
+        const deleteItem = confirm("Voulez-vous vraiment supprimer ce projet ?")
+        if (deleteItem === true) {
+          const Token = localStorage.getItem("userToken");
+          fetch(`http://localhost:5678/api/works/${newdata[index].id}`, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${Token}`
+            },
+          })
+          .then(data => {
+            projectShow();
+            toggleModal()
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
+        }
       })
-      .then(data => {
-        projectShow();
-        toggleModal()
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-      });
-    })
-  });
-
-}
+    });
+  }
 
   // Fermeture de la modale au click sur la croix
   document.querySelector(".close-edit1").addEventListener("click", ()=>{
@@ -207,54 +212,54 @@ async function showModal1() {
 
 
 
-/*************************************************************************/
-/****************************** CREATION DE LA MODALE 2 ******************/
-/*************************************************************************/
+// ---------------- CREATION DE LA MODALE 2 ---------------- //
 /**
- * Fonction "showModal2" en charge des fonctionnalités de la modale 2
+ * Fonction asynchrone qui gère la deuxième modale d'édition.
+ * Elle permet d'ajouter de nouveaux projets.
  */
 
 async function showModal2() {
-// Création du contenu de la modale
-  document.querySelector('.modal2').innerHTML = 
-  `
-  <form class="edit-2">
-    <div class="edit-2-icons">
-      <i class="fa-solid fa-xmark close-edit2" id="closeEdit-2"></i>
-      <i class="fa-solid fa-arrow-left modal-trigger modal-trigger2 switchTrigger2" id="returnEdit-1"></i>
-    </div>
-    <h2>Ajout photo</h2>
-    <div class="upload-box">
-      <input type="file" id="imageUpload" accept="image/*" required>
-      <label for="imageUpload" class="upload-label">
-      <div class="upload-background"></div>
-    </div>
-    <label for="edit2Title">Titre</label>
-    <input type="text" id="edit2Title" required>
+  // Création du contenu de la modale
+  document.querySelector('.modal2').innerHTML = `
+    <form class="edit-2">
+      <div class="edit-2-icons">
+        <i class="fa-solid fa-xmark close-edit2" id="closeEdit-2"></i>
+        <i class="fa-solid fa-arrow-left modal-trigger modal-trigger2 switchTrigger2" id="returnEdit-1"></i>
+      </div>
+      <h2>Ajout photo</h2>
+      <div class="upload-box">
+        <input type="file" id="imageUpload" accept="image/*">
+        <label for="imageUpload" class="upload-label">
+          <div class="upload-background"></div>
+        </label>
+      </div>
+      <label for="edit2Title">Titre</label>
+      <input type="text" id="edit2Title">
+      <label class="label-select" for="edit2Categorie">Catégorie</label>
+      <select id="categorySelect" name="categories">
+        <option value="1">Objets</option>
+        <option value="2">Appartements</option>
+        <option value="3">Hôtels & Restaurants</option>
+      </select>
+      <h3 class="errorFormModal2"></h3>
+      <div id="btn-area2">
+        <button>Valider</button>
+      </div>
+    </form>
+  `;
 
-    <label class="label-select" for="edit2Categorie">Catégorie</label>
-    <select id="categorySelect" name="categories" required>
-      <option value="1">Objets</option>
-      <option value="2">Appartements</option>
-      <option value="3">Hôtels & Restaurants</option>
-    </select>
-    <div id="btn-area2">
-      <button>Valider</button>
-    </div>
-  </form>
-  `
   // Switch modal2 / modal1
-  document.querySelector(".switchTrigger2").addEventListener("click", ()=>{
-    toggleModal()
-    toggleModal2()
-    showModal1()
-  })
+  document.querySelector(".switchTrigger2").addEventListener("click", () => {
+    toggleModal();
+    toggleModal2();
+    showModal1();
+  });
 
   // Fermeture de la modale au click sur la croix
-  document.querySelector(".close-edit2").addEventListener("click", ()=>{
-    toggleModal2()
-  })
-  
+  document.querySelector(".close-edit2").addEventListener("click", () => {
+    toggleModal2();
+  });
+
   // Modification de l'image dans l'input file
   const imageUpload = document.getElementById('imageUpload');
   imageUpload.addEventListener('change', function() {
@@ -269,49 +274,58 @@ async function showModal2() {
     }
   });
 
-  // Récupération des éléments du formulaire pour envoie à l'API
-  document.querySelector('.edit-2').addEventListener('submit', (e) =>{
-    e.preventDefault();
+  // Récupération des éléments du formulaire pour envoi à l'API
+document.querySelector('.edit-2').addEventListener('submit', (e) => {
+  e.preventDefault();
 
-    let titleInput = document.querySelector('#edit2Title');
-    let categoryInput = document.querySelector('#categorySelect').value;
-    let file = imageUpload.files[0];
-    const Token = localStorage.getItem("userToken");
-    console.log(titleInput.value);
-    console.log(typeof categoryInput);
-    const formData = new FormData();
-    console.log(file);
-    formData.append('image', file);
-    formData.append('title', titleInput.value); console.log();
-    formData.append('category', categoryInput);
+  let titleInput = document.querySelector('#edit2Title');
+  let categoryInput = document.querySelector('#categorySelect').value;
+  let file = imageUpload.files[0];
+  const Token = localStorage.getItem("userToken");
+  const formData = new FormData();
+  
+  // Vérification des champs du formulaire
+  if (!titleInput.value || !categoryInput || !file) {
+    document.querySelector(".errorFormModal2").textContent = "Erreur lors de l'envoi. Informations manquantes.";
+    return;  // Sort de la fonction pour empêcher l'envoi du formulaire
+  }
 
-    fetch('http://localhost:5678/api/works', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${Token}`
-      },
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      location.reload();
-    })
-    .catch(error => {
-      console.error('Erreur:', error);
-    });
+  formData.append('image', file);
+  formData.append('title', titleInput.value);
+  formData.append('category', categoryInput);
+
+  fetch('http://localhost:5678/api/works', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${Token}`
+    },
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();  // Si le statut est OK, retourne le JSON
+    } else {
+      throw new Error('Erreur réseau ou côté serveur');  // Sinon, génère une erreur
+    }
+  })
+  .then(data => {
+    alert('Formulaire envoyé avec succès !');
+    location.reload();
+  })
+  .catch(error => {
+    console.error('Erreur:', error);
+    alert('Échec de l\'envoi du formulaire');
+  });
   });
 
-};
+}
 
 
 
-/*************************************************************************/
-/****************************** GENERATION DES PROJETS *******************/
-/*************************************************************************/
+// ---------------- GENERATION DES PROJETS ---------------- //
 /**
- * Fonction "projectShow" en charge de la génération des projets
+ * Fonction asynchrone qui récupère les projets depuis l'API et les affiche sur la page.
  */
 const response = await fetch(`http://localhost:5678/api/works/`);
 const data = await response.json();
@@ -324,6 +338,8 @@ document.querySelector(".filterAll").addEventListener("click", () =>{
   gallery.innerHTML = "";
   projectShow();
 });
+
+
 //Affiche uniquement la catégorie "objet" dans la gallerie
 document.querySelector(".filterObjects").addEventListener("click", async () =>{
   const newresponse = await fetch(`http://localhost:5678/api/works/`);
@@ -332,6 +348,8 @@ document.querySelector(".filterObjects").addEventListener("click", async () =>{
   gallery.innerHTML = "";
   projectShowFilter(filterObject);
 });
+
+
 //Affiche uniquement la catégorie "appartements" dans la gallerie
 document.querySelector(".filterAppartments").addEventListener("click", async () =>{
   const newresponse = await fetch(`http://localhost:5678/api/works/`);
@@ -341,6 +359,8 @@ document.querySelector(".filterAppartments").addEventListener("click", async () 
   gallery.innerHTML = "";
   projectShowFilter(filterObject);
 });
+
+
 //Affiche uniquement la catégorie "hotel & restaurants" dans la gallerie
 document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", async () =>{
   const newresponse = await fetch(`http://localhost:5678/api/works/`);
@@ -353,9 +373,10 @@ document.querySelector(".filterHotelsAndRestaurants").addEventListener("click", 
 
 
 
-/*************************************************************************/
-/****************************** REGEX CONTACT FORM ***********************/
-/*************************************************************************/
+// ---------------- REGEX CONTACT FORM ---------------- //
+/**
+ * Fonction qui valide le formulaire de contact en utilisant une expression régulière pour l'email.
+ */
 
 const contactMsg = document.querySelector(".contactMsg");
 
@@ -378,9 +399,10 @@ document.querySelector(".contactForm").addEventListener("submit", () =>{
 
 
 
-/*************************************************************************/
-/****************************** Trigger modales **************************/
-/*************************************************************************/
+// ---------------- Trigger modales ---------------- //
+/**
+ * Fonctions qui gèrent l'ouverture et la fermeture des modales.
+ */
 
 const modalContainer = document.querySelector(".modal-container");
 const modalTriggers = document.querySelectorAll(".modal-trigger");

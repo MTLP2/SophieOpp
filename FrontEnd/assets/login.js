@@ -44,7 +44,7 @@ document.querySelector('#login form').addEventListener('submit', (event) => {
         const { token } = data;
         console.log("Token reçu:", token);
         
-        // TODO: Utiliser une méthode plus sécurisée pour stocker le token
+        // Création des token
         localStorage.setItem("userToken", token);
         localStorage.setItem("accessToken", "true");
         

@@ -636,6 +636,12 @@ label,select,input{
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+
+.errorFormModal2{
+	text-align: center;
+	color: red;
+	font-size: 1rem;
+}
 /************************************************************/
 /****** Zone btn area des modales 1 et 2 ********************/
 /************************************************************/
