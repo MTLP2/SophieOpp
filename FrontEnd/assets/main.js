@@ -312,7 +312,6 @@ document.querySelector('.edit-2').addEventListener('submit', (e) => {
   .then(data => {
     alert('Formulaire envoyé avec succès !');
     projectShow();
-    toggleModal();
     toggleModal2();
   })
   .catch(error => {
