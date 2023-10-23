@@ -133,7 +133,8 @@ document.addEventListener("DOMContentLoaded", function() {
   // Appel de la fonction "showModal1" pour générer la première modale d'édition
   document.querySelector("#editPortfolio").addEventListener('click', (e) =>{
     showModal1()
-  })
+    toggleModal()
+  })  
 });
 
 
@@ -144,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function() {
  * Elle permet de supprimer des projets.
  */
 async function showModal1() {
-
   // Récupérations des données de l'API pour l'affichage des images
   const newresponse = await fetch(`http://localhost:5678/api/works/`);
   const newdata = await newresponse.json();
@@ -327,8 +327,18 @@ document.querySelector('.edit-2').addEventListener('submit', (e) => {
 /**
  * Fonction asynchrone qui récupère les projets depuis l'API et les affiche sur la page.
  */
-const response = await fetch(`http://localhost:5678/api/works/`);
-const data = await response.json();
+let data; 
+fetch(`http://localhost:5678/api/works/`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur lors de la connexion. Vérifiez vos identifiants.");
+        }
+        return response.json();
+    })
+    .then(dataIn => {
+      data = dataIn;
+    })
+
 
 projectShow();
 const gallery = document.querySelector(".gallery");
